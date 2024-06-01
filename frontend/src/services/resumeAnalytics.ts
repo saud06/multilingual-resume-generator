@@ -138,10 +138,10 @@ class ResumeAnalyticsService {
     ];
 
     for (const keyword of allKeywords) {
-      const count = words.filter(word => 
-        word === keyword.toLowerCase() || 
-        content.toLowerCase().includes(keyword.toLowerCase())
-      ).length;
+      const keywordLower = keyword.toLowerCase();
+      const regex = new RegExp(`\\b${keywordLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'gi');
+      const matches = content.match(regex);
+      const count = matches ? matches.length : 0;
       
       if (count > 0) {
         density[keyword] = Math.round((count / totalWords) * 100 * 100) / 100; // Percentage with 2 decimals
@@ -230,7 +230,9 @@ class ResumeAnalyticsService {
 
     // Score based on keyword coverage and density
     const coverage = (keywordCount / totalPossibleKeywords) * 100;
-    const avgDensity = Object.values(keywordDensity).reduce((sum, density) => sum + density, 0) / keywordCount || 0;
+    const avgDensity = keywordCount > 0 
+      ? Object.values(keywordDensity).reduce((sum, density) => sum + density, 0) / keywordCount 
+      : 0;
 
     // Optimal density is between 1-3%
     const densityScore = avgDensity >= 1 && avgDensity <= 3 ? 100 : 
@@ -247,7 +249,8 @@ class ResumeAnalyticsService {
     // Check for common formatting issues
     if (content.includes('\t')) score -= 10; // Tabs can cause issues
     if (content.match(/\s{3,}/g)) score -= 5; // Multiple spaces
-    if (content.match(/[^\x00-\x7F]/g)?.length > content.length * 0.1) score -= 15; // Too many special characters
+    const specialChars = content.match(/[^\x00-\x7F]/g);
+    if (specialChars && specialChars.length > content.length * 0.1) score -= 15; // Too many special characters
     if (!content.match(/\n\n/g)) score -= 10; // No paragraph breaks
 
     // Positive formatting indicators
