@@ -53,11 +53,7 @@ services:
     plan: free
     envVars:
       - key: NEXT_PUBLIC_API_URL
-        fromService:
-          type: web
-          name: multilingual-resume-backend
-          property: host
-          suffix: /api
+        value: https://multilingual-resume-backend.onrender.com/api
       - key: NEXTAUTH_SECRET
         generateValue: true
       - key: NEXTAUTH_URL
