@@ -19,11 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => [
-        'http://localhost:3000',
-        'https://multilingual-resume-frontend.onrender.com',
-        env('CORS_ALLOWED_ORIGINS', '*')
-    ],
+    'allowed_origins' => ['*'],
 
     'allowed_origins_patterns' => [],
 
