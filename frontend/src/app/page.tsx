@@ -661,7 +661,7 @@ export default function Home() {
                   {currentContent.hero.secondary}
                 </Button>
               </DialogTrigger>
-              <DialogContent className="w-[95vw] sm:w-[85vw] lg:w-[65vw] max-w-4xl max-h-[90vh] overflow-y-auto overflow-x-hidden p-4 sm:p-6 lg:p-8">
+              <DialogContent className="w-[95vw] sm:w-[90vw] lg:w-[85vw] xl:w-[80vw] max-w-7xl max-h-[90vh] overflow-y-auto overflow-x-hidden p-4 sm:p-6 lg:p-8">
                 <DialogHeader>
                   <DialogTitle className="text-xl sm:text-2xl font-bold text-center mb-2">
                     {currentContent.howItWorks.title}
