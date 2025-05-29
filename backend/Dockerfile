@@ -37,6 +37,14 @@ RUN chown -R www-data:www-data /var/www/html && \
 # Copy Apache config
 COPY apache-config.conf /etc/apache2/sites-available/000-default.conf
 
-# Expose port and start Apache
+# Create startup script
+RUN echo '#!/bin/bash' > /start.sh && \
+    echo 'echo "Running database migrations..."' >> /start.sh && \
+    echo 'php artisan migrate --force || echo "Migration failed, continuing..."' >> /start.sh && \
+    echo 'echo "Starting Apache..."' >> /start.sh && \
+    echo 'exec apache2-foreground' >> /start.sh && \
+    chmod +x /start.sh
+
+# Expose port and start with migration
 EXPOSE 80
-CMD ["apache2-foreground"]
+CMD ["/start.sh"]
