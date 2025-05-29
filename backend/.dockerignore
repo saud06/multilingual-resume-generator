@@ -1,0 +1,28 @@
+# Ignore development files
+.env
+.env.backup
+.env.production
+.git
+.gitignore
+README.md
+Dockerfile
+.dockerignore
+
+# Ignore cache and logs
+storage/logs/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+.phpunit.result.cache
+
+# Ignore IDE files
+.vscode
+.idea
+.phpactor.json
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Don't ignore public directory - we need it!
+!public/

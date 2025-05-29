@@ -28,6 +28,9 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction --no-script
 # Copy application code
 COPY . .
 
+# Explicitly ensure public directory exists and is copied
+COPY public/ ./public/
+
 # Run composer scripts after copying all files
 RUN composer run-script post-autoload-dump
 
