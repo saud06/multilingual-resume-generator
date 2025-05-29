@@ -661,7 +661,7 @@ export default function Home() {
                   {currentContent.hero.secondary}
                 </Button>
               </DialogTrigger>
-              <DialogContent className="w-[95vw] sm:w-[85vw] lg:w-[65vw] max-w-4xl max-h-[90vh] overflow-y-auto p-4 sm:p-6 lg:p-8">
+              <DialogContent className="w-[95vw] sm:w-[85vw] lg:w-[65vw] max-w-4xl max-h-[90vh] overflow-y-auto overflow-x-hidden p-4 sm:p-6 lg:p-8">
                 <DialogHeader>
                   <DialogTitle className="text-xl sm:text-2xl font-bold text-center mb-2">
                     {currentContent.howItWorks.title}
@@ -675,20 +675,20 @@ export default function Home() {
                   {/* Steps */}
                   <div className="grid gap-4 sm:gap-6 lg:grid-cols-2 mb-6 sm:mb-8">
                     {currentContent.howItWorks.steps.map((step, index) => (
-                      <div key={index} className="flex gap-3 sm:gap-4 p-4 sm:p-6 rounded-lg border bg-gradient-to-r bg-primary/5">
+                      <div key={index} className="flex gap-3 sm:gap-4 p-4 sm:p-6 rounded-lg border bg-gradient-to-r bg-primary/5 min-h-0">
                         <div className="flex-shrink-0">
                           <div className="w-10 h-10 sm:w-12 sm:h-12 gradient-professional rounded-full flex items-center justify-center text-white font-bold text-sm sm:text-base">
                             {step.number}
                           </div>
                         </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-2 sm:mb-3">
-                            <div className="text-primary hidden sm:block">
+                        <div className="flex-1 min-w-0 overflow-hidden">
+                          <div className="flex items-start gap-2 mb-2 sm:mb-3">
+                            <div className="text-primary hidden sm:block flex-shrink-0">
                               {step.icon}
                             </div>
-                            <h3 className="font-semibold text-sm sm:text-base">{step.title}</h3>
+                            <h3 className="font-semibold text-sm sm:text-base break-words">{step.title}</h3>
                           </div>
-                          <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">
+                          <p className="text-gray-600 text-xs sm:text-sm leading-relaxed break-words">
                             {step.description}
                           </p>
                         </div>
