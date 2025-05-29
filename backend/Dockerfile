@@ -45,12 +45,19 @@ RUN mkdir -p storage/framework/{sessions,views,cache,testing} \
 RUN a2enmod rewrite
 COPY apache-config.conf /etc/apache2/sites-available/000-default.conf
 
-# Verify directory structure
-RUN ls -la /var/www/html/ && ls -la /var/www/html/public/
+# Verify directory structure and files
+RUN ls -la /var/www/html/ && \
+    ls -la /var/www/html/public/ && \
+    echo "Checking index.php:" && \
+    ls -la /var/www/html/public/index.php && \
+    echo "File contents preview:" && \
+    head -5 /var/www/html/public/index.php
 
 # Set proper permissions
 RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html
+    && chmod -R 755 /var/www/html \
+    && chmod 644 /var/www/html/public/index.php \
+    && chmod 644 /var/www/html/public/.htaccess
 
 # Test Laravel installation
 RUN php artisan --version || echo "Laravel not properly installed"
