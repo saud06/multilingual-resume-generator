@@ -383,25 +383,29 @@ export default function Home() {
             number: "01",
             icon: <User className="h-8 w-8" />,
             title: "Informationen eingeben",
-            description: "Geben Sie Ihre persönlichen Daten, Berufserfahrung, Bildung und Fähigkeiten über unser intuitives Formular ein. Fügen Sie Kontaktinformationen, berufliche Zusammenfassung, Arbeitshistorie mit Erfolgen, Bildungshintergrund, technische Fähigkeiten, Sprachen und relevante Projekte oder Zertifizierungen hinzu."
+            description: "Geben Sie Ihre persönlichen Daten, Berufserfahrung, Bildung und Fähigkeiten über unser intuitives Formular ein.",
+            longDescription: "Geben Sie Ihre persönlichen Daten, Berufserfahrung, Bildung und Fähigkeiten über unser intuitives Formular ein. Fügen Sie Kontaktinformationen, berufliche Zusammenfassung, Arbeitshistorie mit Erfolgen, Bildungshintergrund, technische Fähigkeiten, Sprachen und relevante Projekte oder Zertifizierungen hinzu."
           },
           {
             number: "02",
             icon: <Globe className="h-8 w-8" />,
             title: "Sprache & Stil wählen",
-            description: "Wählen Sie zwischen Englisch und Deutsch, dann Ihren bevorzugten Stil. Wählen Sie internationales Format für globale Märkte mit ATS-Optimierung oder deutsches Lebenslauf-Format mit traditioneller Struktur, Foto-Bereich und formaler europäischer Gestaltung für deutschsprachige Märkte."
+            description: "Wählen Sie zwischen Englisch und Deutsch, dann Ihren bevorzugten Lebenslauf-Stil und Format.",
+            longDescription: "Wählen Sie zwischen Englisch und Deutsch, dann Ihren bevorzugten Stil. Wählen Sie internationales Format für globale Märkte mit ATS-Optimierung oder deutsches Lebenslauf-Format mit traditioneller Struktur, Foto-Bereich und formaler europäischer Gestaltung für deutschsprachige Märkte."
           },
           {
             number: "03",
             icon: <Brain className="h-8 w-8" />,
             title: "KI-Generierung",
-            description: "Unsere fortschrittliche KI analysiert Ihre Informationen und erstellt professionelle, kulturell angepasste Inhalte mit modernsten Sprachmodellen. Das System formatiert intelligent Ihre Erfahrung, optimiert Schlüsselwörter für ATS-Systeme und passt Ton und Struktur für Ihren Zielmarkt an."
+            description: "Unsere fortschrittliche KI analysiert Ihre Informationen und erstellt professionelle, kulturell angepasste Inhalte.",
+            longDescription: "Unsere fortschrittliche KI analysiert Ihre Informationen und erstellt professionelle, kulturell angepasste Inhalte mit modernsten Sprachmodellen. Das System formatiert intelligent Ihre Erfahrung, optimiert Schlüsselwörter für ATS-Systeme und passt Ton und Struktur für Ihren Zielmarkt an."
           },
           {
             number: "04",
             icon: <Download className="h-8 w-8" />,
             title: "Herunterladen & Bewerben",
-            description: "Erhalten Sie Ihren professionell formatierten Lebenslauf sofort in mehreren Formaten. Laden Sie als PDF für Bewerbungen herunter, erhalten Sie ATS-freundliche Versionen für Online-Einreichungen und greifen Sie auf bearbeitbare Formate für zukünftige Updates zu. Bewerben Sie sich selbstbewusst auf Ihre Traumjobs."
+            description: "Erhalten Sie Ihren professionell formatierten Lebenslauf sofort in mehreren Formaten für Bewerbungen.",
+            longDescription: "Erhalten Sie Ihren professionell formatierten Lebenslauf sofort in mehreren Formaten. Laden Sie als PDF für Bewerbungen herunter, erhalten Sie ATS-freundliche Versionen für Online-Einreichungen und greifen Sie auf bearbeitbare Formate für zukünftige Updates zu. Bewerben Sie sich selbstbewusst auf Ihre Traumjobs."
           }
         ],
         features: [
