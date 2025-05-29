@@ -263,25 +263,29 @@ export default function Home() {
             number: "01",
             icon: <User className="h-8 w-8" />,
             title: "Enter Your Information",
-            description: "Fill in your personal details, work experience, education, and skills through our intuitive form. Add your contact information, professional summary, job history with achievements, educational background, technical skills, languages, and any relevant projects or certifications."
+            description: "Fill in your personal details, work experience, education, and skills through our intuitive form.",
+            longDescription: "Fill in your personal details, work experience, education, and skills through our intuitive form. Add your contact information, professional summary, job history with achievements, educational background, technical skills, languages, and any relevant projects or certifications."
           },
           {
             number: "02",
             icon: <Globe className="h-8 w-8" />,
             title: "Choose Language & Style",
-            description: "Select between English and German languages, then choose your preferred style. Pick International format for global markets with ATS optimization, or German Lebenslauf format with traditional structure, photo section, and formal European styling for German-speaking markets."
+            description: "Select between English and German languages, then choose your preferred resume style and format.",
+            longDescription: "Select between English and German languages, then choose your preferred style. Pick International format for global markets with ATS optimization, or German Lebenslauf format with traditional structure, photo section, and formal European styling for German-speaking markets."
           },
           {
             number: "03",
             icon: <Brain className="h-8 w-8" />,
             title: "AI Generation",
-            description: "Our advanced AI analyzes your information and creates professional, culturally-adapted content using state-of-the-art language models. The system intelligently formats your experience, optimizes keywords for ATS systems, and adapts the tone and structure for your target market."
+            description: "Our advanced AI analyzes your information and creates professional, culturally-adapted content.",
+            longDescription: "Our advanced AI analyzes your information and creates professional, culturally-adapted content using state-of-the-art language models. The system intelligently formats your experience, optimizes keywords for ATS systems, and adapts the tone and structure for your target market."
           },
           {
             number: "04",
             icon: <Download className="h-8 w-8" />,
             title: "Download & Apply",
-            description: "Receive your professionally formatted resume instantly in multiple formats. Download as PDF for applications, get ATS-friendly versions for online submissions, and access editable formats for future updates. Start applying to your dream jobs with confidence and professional presentation."
+            description: "Receive your professionally formatted resume instantly in multiple formats ready for applications.",
+            longDescription: "Receive your professionally formatted resume instantly in multiple formats. Download as PDF for applications, get ATS-friendly versions for online submissions, and access editable formats for future updates. Start applying to your dream jobs with confidence and professional presentation."
           }
         ],
         features: [
@@ -681,12 +685,7 @@ export default function Home() {
                             <h3 className="font-semibold text-sm sm:text-base">{step.title}</h3>
                           </div>
                           <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">
-                            <span className="sm:hidden">
-                              {step.description.split('.')[0]}.
-                            </span>
-                            <span className="hidden sm:inline">
-                              {step.description.split('.').slice(0, 2).join('.') + '.'}
-                            </span>
+                            {step.description}
                           </p>
                         </div>
                       </div>
