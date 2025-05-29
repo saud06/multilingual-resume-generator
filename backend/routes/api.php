@@ -5,6 +5,15 @@ use App\Http\Controllers\Api\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+// Handle preflight requests globally
+Route::options('{any}', function () {
+    return response('', 200)
+        ->header('Access-Control-Allow-Origin', '*')
+        ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+        ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept')
+        ->header('Access-Control-Max-Age', '86400');
+})->where('any', '.*');
+
 // Health check endpoint
 Route::get('/health', function () {
     return response()->json([
@@ -19,7 +28,7 @@ Route::get('/health', function () {
             'authentication' => true,
             'analytics' => true
         ]
-    ]);
+    ])->header('Access-Control-Allow-Origin', '*');
 });
 
 // Authentication routes
