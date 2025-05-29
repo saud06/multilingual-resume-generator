@@ -36,6 +36,17 @@ RUN mkdir -p storage/framework/{sessions,views,cache,testing} \
 RUN a2enmod rewrite
 COPY apache-config.conf /etc/apache2/sites-available/000-default.conf
 
+# Create .htaccess file in public directory
+RUN echo "RewriteEngine On\nRewriteCond %{REQUEST_FILENAME} !-f\nRewriteCond %{REQUEST_FILENAME} !-d\nRewriteRule ^(.*)$ index.php [QSA,L]" > public/.htaccess
+
+# Set proper permissions
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html
+
+# Cache Laravel configuration
+RUN php artisan config:cache || true
+RUN php artisan route:cache || true
+
 # Expose port 80
 EXPOSE 80
 
