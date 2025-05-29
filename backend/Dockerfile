@@ -24,11 +24,17 @@ WORKDIR /var/www/html
 # Copy composer files first for better caching
 COPY composer.json composer.lock ./
 
-# Install PHP dependencies
-RUN composer install --no-dev --optimize-autoloader --no-interaction
+# Allow running composer as root in Docker
+ENV COMPOSER_ALLOW_SUPERUSER=1
+
+# Install PHP dependencies without scripts
+RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
 
 # Copy application code
 COPY . .
+
+# Run composer scripts after code exists
+RUN composer run-script post-autoload-dump
 
 # Verify public directory was copied
 RUN echo "=== Verifying Laravel files ===" && \
