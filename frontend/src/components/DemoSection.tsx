@@ -124,8 +124,9 @@ export default function DemoSection({ language }: DemoSectionProps) {
     
     try {
       const sampleData = type === "german" ? sampleGermanData : sampleInternationalData;
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
       
-      const response = await fetch('http://localhost:8000/api/resumes/export-pdf', {
+      const response = await fetch(`${apiUrl}/resumes/export-pdf`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -149,7 +150,9 @@ export default function DemoSection({ language }: DemoSectionProps) {
       
     } catch (error) {
       console.error('Download failed:', error);
-      alert(`Download failed. Please make sure the backend server is running on http://localhost:8000`);
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+      const baseUrl = apiUrl.replace('/api', '');
+      alert(`Download failed. Please make sure the backend server is running on ${baseUrl}`);
     } finally {
       setIsDownloading(null);
     }

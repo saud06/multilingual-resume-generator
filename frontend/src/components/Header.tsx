@@ -92,15 +92,6 @@ export default function Header({ language, onLanguageChange }: HeaderProps) {
           </nav>
           
           <div className="flex items-center space-x-2 md:space-x-4">
-            {/* Mobile Menu Button */}
-            <Button
-              variant="ghost"
-              size="sm"
-              className="md:hidden"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
-              {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </Button>
             {/* Language Toggle */}
             <div className="flex items-center bg-gray-100 rounded-lg p-1">
               <button
@@ -125,8 +116,19 @@ export default function Header({ language, onLanguageChange }: HeaderProps) {
               </button>
             </div>
             
+            {/* Mobile Menu Button */}
+            <Button
+              variant="ghost"
+              size="sm"
+              className="md:hidden"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </Button>
+            
+            {/* Desktop Auth - Hidden on Mobile */}
             {(isAuthenticated || session) ? (
-              <div className="flex items-center gap-2">
+              <div className="hidden md:flex items-center gap-2">
                 <span className="text-sm">
                   {currentContent.auth.hello}, {session?.user?.name?.split(' ')[0] || user?.name?.split(' ')[0] || 'User'}
                 </span>
@@ -148,6 +150,7 @@ export default function Header({ language, onLanguageChange }: HeaderProps) {
               <Button 
                 variant="outline" 
                 size="sm"
+                className="hidden md:inline-flex"
                 onClick={() => setShowAuthModal(true)}
               >
                 {currentContent.auth.signIn}

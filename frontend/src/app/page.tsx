@@ -175,8 +175,9 @@ export default function Home() {
     
     try {
       const sampleData = type === "german" ? sampleGermanData : sampleInternationalData;
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
       
-      const response = await fetch('http://localhost:8000/api/resumes/export-pdf', {
+      const response = await fetch(`${apiUrl}/resumes/export-pdf`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -200,7 +201,9 @@ export default function Home() {
       
     } catch (error) {
       console.error('Download failed:', error);
-      alert(`Download failed. Please make sure the backend server is running on http://localhost:8000`);
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+      const baseUrl = apiUrl.replace('/api', '');
+      alert(`Download failed. Please make sure the backend server is running on ${baseUrl}`);
     } finally {
       // setIsDownloading(null);
     }
@@ -474,15 +477,7 @@ export default function Home() {
           </nav>
           
           <div className="flex items-center space-x-2 md:space-x-4">
-            {/* Mobile Menu Button */}
-            <Button
-              variant="ghost"
-              size="sm"
-              className="md:hidden"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
-              {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </Button>
+            {/* Language Toggle */}
             <div className="flex items-center bg-gray-100 rounded-lg p-1">
               <button
                 onClick={() => setLanguage("de")}
@@ -505,8 +500,20 @@ export default function Home() {
                 EN
               </button>
             </div>
+            
+            {/* Mobile Menu Button */}
+            <Button
+              variant="ghost"
+              size="sm"
+              className="md:hidden"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </Button>
+            
+            {/* Desktop Auth - Hidden on Mobile */}
             {(isAuthenticated || session) ? (
-              <div className="flex items-center gap-2">
+              <div className="hidden md:flex items-center gap-2">
                 <span className="text-sm">
                   {currentContent.auth.hello}, {session?.user?.name?.split(' ')[0] || user?.name?.split(' ')[0] || 'User'}
                 </span>
@@ -528,6 +535,7 @@ export default function Home() {
               <Button 
                 variant="outline" 
                 size="sm"
+                className="hidden md:inline-flex"
                 onClick={() => setShowAuthModal(true)}
               >
                 <User className="mr-2 h-4 w-4" />
