@@ -127,7 +127,22 @@ class ApiService {
       const response = await fetch(url, config);
       
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        // Try to get the actual error message from the response
+        let errorMessage = `HTTP error! status: ${response.status}`;
+        try {
+          const errorData = await response.json();
+          console.error('API Error Response:', errorData);
+          if (errorData.message) {
+            errorMessage = errorData.message;
+          }
+          if (errorData.errors) {
+            console.error('Validation Errors:', errorData.errors);
+            errorMessage += ` - Validation errors: ${JSON.stringify(errorData.errors)}`;
+          }
+        } catch (parseError) {
+          console.error('Could not parse error response:', parseError);
+        }
+        throw new Error(errorMessage);
       }
       
       return await response.json();
@@ -235,6 +250,7 @@ class ApiService {
   }
 
   async register(userData: RegisterRequest): Promise<AuthResponse> {
+    console.log('Registration data being sent:', userData);
     return this.request<AuthResponse>('/auth/register', {
       method: 'POST',
       body: JSON.stringify(userData),
