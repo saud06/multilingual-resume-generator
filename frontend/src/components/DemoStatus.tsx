@@ -79,7 +79,7 @@ export default function DemoStatus({ onSignupClick }: DemoStatusProps) {
   return (
     <Card className="border-primary/20 bg-primary/5">
       <CardContent className="p-4">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-primary/10 rounded-full">
               {isDemoMode ? (
@@ -88,12 +88,12 @@ export default function DemoStatus({ onSignupClick }: DemoStatusProps) {
                 <Clock className="h-4 w-4 text-orange-600" />
               )}
             </div>
-            <div>
-              <div className="flex items-center gap-2">
+            <div className="flex-1">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2">
                 <h3 className="font-semibold text-sm">
                   {isDemoMode ? currentContent.demoMode : currentContent.limitReached}
                 </h3>
-                <Badge variant={isDemoMode ? "default" : "destructive"} className="text-xs">
+                <Badge variant={isDemoMode ? "default" : "destructive"} className="text-xs w-fit">
                   {demoGenerationsLeft}/{totalDemoGenerations} {currentContent.left}
                 </Badge>
               </div>
@@ -110,7 +110,7 @@ export default function DemoStatus({ onSignupClick }: DemoStatusProps) {
             <Button 
               onClick={onSignupClick}
               size="sm"
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 w-full sm:w-auto"
             >
               <Sparkles className="h-3 w-3" />
               {currentContent.signUpFree}

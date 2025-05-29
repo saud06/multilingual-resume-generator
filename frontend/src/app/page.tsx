@@ -542,15 +542,15 @@ export default function Home() {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/create">
-              <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
+            <Link href="/create" className="w-full sm:w-auto">
+              <Button size="lg" className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground">
                 {currentContent.hero.cta}
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
             <Dialog>
               <DialogTrigger asChild>
-                <Button size="lg" variant="outline">
+                <Button size="lg" variant="outline" className="w-full sm:w-auto">
                   <Play className="mr-2 h-4 w-4" />
                   {currentContent.hero.secondary}
                 </Button>
@@ -659,8 +659,8 @@ export default function Home() {
               (language === "de" ? "Schließen Sie sich Tausenden von Fachkräften an, die mit KI-gestützten Lebensläufen ihren Traumjob gefunden haben" : "Join thousands of professionals who landed their dream jobs with AI-powered resumes")
             }
           </p>
-          <Link href="/create">
-            <Button size="lg" variant="secondary" className="bg-white text-primary hover:bg-gray-100">
+          <Link href="/create" className="w-full sm:w-auto flex justify-center">
+            <Button size="lg" variant="secondary" className="w-full sm:w-auto bg-white text-primary hover:bg-gray-100">
               {isAuthenticated ? (language === "de" ? "Lebenslauf erstellen" : "Create Resume") : (language === "de" ? "Kostenlose Demo starten" : "Start Free Demo")}
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>

@@ -937,54 +937,62 @@ export default function ResumeForm() {
 
   return (
     <div className="min-h-screen gradient-subtle">
-      <div className="max-w-7xl mx-auto p-6 space-y-6">
+      <div className="max-w-7xl mx-auto p-4 sm:p-6 space-y-6">
         {/* Page Header */}
-        <div className="text-center py-8">
-          <h1 className="text-4xl font-bold mb-4 text-gradient-professional">
+        <div className="text-center py-4 sm:py-8">
+          <h1 className="text-2xl sm:text-4xl font-bold mb-4 text-gradient-professional">
             {currentContent.header.title}
           </h1>
-          <p className="text-xl text-gray-600">{currentContent.header.subtitle}</p>
+          <p className="text-lg sm:text-xl text-gray-600 px-4">{currentContent.header.subtitle}</p>
         </div>
 
         {/* Demo Status */}
         <DemoStatus onSignupClick={() => setShowAuthModal(true)} />
 
       <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
-        <TabsList className="flex w-full gap-1 overflow-x-auto">
-          <TabsTrigger value="personal" className="flex items-center gap-1 text-xs sm:text-sm whitespace-nowrap flex-shrink-0">
+        <TabsList className="grid w-full grid-cols-3 sm:grid-cols-6 lg:grid-cols-8 gap-1 h-auto p-1">
+          <TabsTrigger value="personal" className="flex flex-col sm:flex-row items-center gap-1 text-xs sm:text-sm p-2 sm:p-3 h-auto">
             <User className="h-4 w-4 flex-shrink-0" />
-            <span>{currentContent.tabs.personal}</span>
+            <span className="hidden sm:inline">{currentContent.tabs.personal}</span>
+            <span className="sm:hidden text-xs">Info</span>
           </TabsTrigger>
-          <TabsTrigger value="experience" className="flex items-center gap-1 text-xs sm:text-sm whitespace-nowrap flex-shrink-0">
+          <TabsTrigger value="experience" className="flex flex-col sm:flex-row items-center gap-1 text-xs sm:text-sm p-2 sm:p-3 h-auto">
             <Briefcase className="h-4 w-4 flex-shrink-0" />
-            <span>{currentContent.tabs.experience}</span>
+            <span className="hidden sm:inline">{currentContent.tabs.experience}</span>
+            <span className="sm:hidden text-xs">Work</span>
           </TabsTrigger>
-          <TabsTrigger value="education" className="flex items-center gap-1 text-xs sm:text-sm whitespace-nowrap flex-shrink-0">
+          <TabsTrigger value="education" className="flex flex-col sm:flex-row items-center gap-1 text-xs sm:text-sm p-2 sm:p-3 h-auto">
             <GraduationCap className="h-4 w-4 flex-shrink-0" />
-            <span>{currentContent.tabs.education}</span>
+            <span className="hidden sm:inline">{currentContent.tabs.education}</span>
+            <span className="sm:hidden text-xs">Edu</span>
           </TabsTrigger>
-          <TabsTrigger value="skills" className="flex items-center gap-1 text-xs sm:text-sm whitespace-nowrap flex-shrink-0">
+          <TabsTrigger value="skills" className="flex flex-col sm:flex-row items-center gap-1 text-xs sm:text-sm p-2 sm:p-3 h-auto">
             <Award className="h-4 w-4 flex-shrink-0" />
-            <span>{currentContent.tabs.skills}</span>
+            <span className="hidden sm:inline">{currentContent.tabs.skills}</span>
+            <span className="sm:hidden text-xs">Skills</span>
           </TabsTrigger>
-          <TabsTrigger value="jobAnalysis" className="flex items-center gap-1 text-xs sm:text-sm whitespace-nowrap flex-shrink-0">
+          <TabsTrigger value="jobAnalysis" className="flex flex-col sm:flex-row items-center gap-1 text-xs sm:text-sm p-2 sm:p-3 h-auto">
             <FileText className="h-4 w-4 flex-shrink-0" />
-            <span>{currentContent.tabs.jobAnalysis}</span>
+            <span className="hidden sm:inline">{currentContent.tabs.jobAnalysis}</span>
+            <span className="sm:hidden text-xs">Job</span>
           </TabsTrigger>
-          <TabsTrigger value="coverLetter" className="flex items-center gap-1 text-xs sm:text-sm whitespace-nowrap flex-shrink-0">
+          <TabsTrigger value="coverLetter" className="flex flex-col sm:flex-row items-center gap-1 text-xs sm:text-sm p-2 sm:p-3 h-auto">
             <FileText className="h-4 w-4 flex-shrink-0" />
-            <span>{currentContent.tabs.coverLetter}</span>
+            <span className="hidden sm:inline">{currentContent.tabs.coverLetter}</span>
+            <span className="sm:hidden text-xs">Cover</span>
           </TabsTrigger>
           {generatedResume && (
-            <TabsTrigger value="analytics" className="flex items-center gap-1 text-xs sm:text-sm whitespace-nowrap flex-shrink-0">
+            <TabsTrigger value="analytics" className="flex flex-col sm:flex-row items-center gap-1 text-xs sm:text-sm p-2 sm:p-3 h-auto">
               <BarChart3 className="h-4 w-4 flex-shrink-0" />
-              <span>{currentContent.tabs.analytics}</span>
+              <span className="hidden sm:inline">{currentContent.tabs.analytics}</span>
+              <span className="sm:hidden text-xs">Stats</span>
             </TabsTrigger>
           )}
           {generatedResume && (
-            <TabsTrigger value="results" className="flex items-center gap-1 text-xs sm:text-sm whitespace-nowrap flex-shrink-0">
+            <TabsTrigger value="results" className="flex flex-col sm:flex-row items-center gap-1 text-xs sm:text-sm p-2 sm:p-3 h-auto">
               <Eye className="h-4 w-4 flex-shrink-0" />
-              <span>{currentContent.tabs.results}</span>
+              <span className="hidden sm:inline">{currentContent.tabs.results}</span>
+              <span className="sm:hidden text-xs">Resume</span>
             </TabsTrigger>
           )}
         </TabsList>
@@ -1690,13 +1698,13 @@ export default function ResumeForm() {
             </div>
           )}
 
-          <div className="flex gap-4">
-            <div className="space-y-2">
+          <div className="flex flex-col sm:flex-row gap-4">
+            <div className="space-y-2 flex-1">
               <Label className="text-sm font-medium text-gray-700">
                 {currentContent.generate.style}
               </Label>
               <Select value={resumeStyle} onValueChange={(value: "german" | "international") => setResumeStyle(value)}>
-                <SelectTrigger className="h-11 border-gray-300 focus:border-primary focus:ring-primary w-48">
+                <SelectTrigger className="h-11 border-gray-300 focus:border-primary focus:ring-primary w-full sm:w-48">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -1705,12 +1713,12 @@ export default function ResumeForm() {
                 </SelectContent>
               </Select>
             </div>
-            <div className="space-y-2">
+            <div className="space-y-2 flex-1">
               <Label className="text-sm font-medium text-gray-700">
                 {currentContent.generate.language}
               </Label>
               <Select value={language} onValueChange={(value: "en" | "de") => setLanguage(value)}>
-                <SelectTrigger className="h-11 border-gray-300 focus:border-primary focus:ring-primary w-48">
+                <SelectTrigger className="h-11 border-gray-300 focus:border-primary focus:ring-primary w-full sm:w-32">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -1794,37 +1802,49 @@ export default function ResumeForm() {
           </div>
           
           {/* Action Buttons */}
-          <div className="flex gap-4">
+          <div className="flex flex-col sm:flex-row gap-4">
             <Button 
               onClick={clearFormData}
               variant="outline"
-              className="flex-1 border-red-300 text-red-600 hover:bg-red-50 hover:border-red-400"
+              className="w-full sm:flex-1 border-red-300 text-red-600 hover:bg-red-50 hover:border-red-400"
               size="lg"
             >
               <Trash2 className="h-4 w-4 mr-2" />
-              {language === 'de' ? 'Formular zurücksetzen' : 'Reset Form'}
+              <span className="hidden sm:inline">{language === 'de' ? 'Formular zurücksetzen' : 'Reset Form'}</span>
+              <span className="sm:hidden">{language === 'de' ? 'Zurücksetzen' : 'Reset'}</span>
             </Button>
             
             <Button 
               onClick={handleGenerateResume}
               disabled={isGenerating || (!resumeData.personalInfo.firstName || !resumeData.personalInfo.lastName || !resumeData.personalInfo.email)}
-              className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground disabled:opacity-50"
+              className="w-full sm:flex-1 bg-primary hover:bg-primary/90 text-primary-foreground disabled:opacity-50"
               size="lg"
             >
             {isGenerating ? (
               <>
                 <Sparkles className="h-4 w-4 mr-2 animate-spin" />
-                {currentContent.generate.generating}
+                <span className="hidden sm:inline">{currentContent.generate.generating}</span>
+                <span className="sm:hidden">Generating...</span>
               </>
             ) : (
               <>
                 <Sparkles className="h-4 w-4 mr-2" />
-                {!isAuthenticated && isDemoMode 
-                  ? `${currentContent.generate.button} (${demoGenerationsLeft} left)`
-                  : !isAuthenticated && !isDemoMode
-                  ? currentContent.generate.signUpToGenerate
-                  : currentContent.generate.button
-                }
+                <span className="hidden sm:inline">
+                  {!isAuthenticated && isDemoMode 
+                    ? `${currentContent.generate.button} (${demoGenerationsLeft} left)`
+                    : !isAuthenticated && !isDemoMode
+                    ? currentContent.generate.signUpToGenerate
+                    : currentContent.generate.button
+                  }
+                </span>
+                <span className="sm:hidden">
+                  {!isAuthenticated && isDemoMode 
+                    ? `Generate (${demoGenerationsLeft} left)`
+                    : !isAuthenticated && !isDemoMode
+                    ? "Sign Up to Generate"
+                    : "Generate Resume"
+                  }
+                </span>
               </>
             )}
             </Button>
