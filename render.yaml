@@ -1,4 +1,46 @@
 services:
+  # Laravel Backend API (Docker)
+  - type: web
+    name: multilingual-resume-backend
+    runtime: docker
+    repo: https://github.com/saud06/multilingual-resume-generator.git
+    branch: main
+    rootDir: backend
+    dockerfilePath: ./Dockerfile
+    plan: free
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: APP_KEY
+        generateValue: true
+      - key: APP_URL
+        fromService:
+          type: web
+          name: multilingual-resume-backend
+          property: host
+      - key: DB_CONNECTION
+        value: mysql
+      - key: DB_HOST
+        value: trolley.proxy.rlwy.net
+      - key: DB_PORT
+        value: 44769
+      - key: DB_DATABASE
+        value: railway
+      - key: DB_USERNAME
+        value: root
+      - key: DB_PASSWORD
+        value: SFWoBIaiLeDBzlLlaJspUZtnnuYWxJiq
+      - key: SESSION_DRIVER
+        value: database
+      - key: CACHE_STORE
+        value: database
+      - key: QUEUE_CONNECTION
+        value: database
+      - key: HUGGINGFACE_API_TOKEN
+        value: # Add your token here
+
   # Next.js Frontend
   - type: web
     name: multilingual-resume-frontend
@@ -11,7 +53,11 @@ services:
     plan: free
     envVars:
       - key: NEXT_PUBLIC_API_URL
-        value: https://multilingual-resume-backend.onrender.com/api
+        fromService:
+          type: web
+          name: multilingual-resume-backend
+          property: host
+          suffix: /api
       - key: NEXTAUTH_SECRET
         generateValue: true
       - key: NEXTAUTH_URL
