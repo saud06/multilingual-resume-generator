@@ -11,58 +11,42 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     libzip-dev \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
-# Get latest Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Enable Apache rewrite
+RUN a2enmod rewrite
+
+# Copy Apache vhost config
+COPY apache-config.conf /etc/apache2/sites-available/000-default.conf
 
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy composer files first for better caching
-COPY composer.json composer.lock ./
-
-# Allow running composer as root in Docker
-ENV COMPOSER_ALLOW_SUPERUSER=1
-
-# Install PHP dependencies without scripts
-RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
-
-# Copy application code
+# Copy full application (including artisan + public/)
 COPY . .
 
-# Run composer scripts after code exists
-RUN composer run-script post-autoload-dump
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Verify public directory was copied
-RUN echo "=== Verifying Laravel files ===" && \
-    ls -la /var/www/html/ && \
-    echo "=== Public directory ===" && \
-    ls -la /var/www/html/public/ && \
-    echo "=== Checking critical files ===" && \
-    ls -la /var/www/html/public/index.php && \
-    ls -la /var/www/html/bootstrap/app.php
+# Allow composer as root
+ENV COMPOSER_ALLOW_SUPERUSER=1
+
+# Install PHP dependencies
+RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 # Create required directories and set permissions
 RUN mkdir -p storage/framework/{sessions,views,cache,testing} \
     storage/logs \
     bootstrap/cache \
-    && chown -R www-data:www-data storage bootstrap/cache public \
-    && chmod -R 755 storage bootstrap/cache \
-    && chmod -R 644 public
+    && chown -R www-data:www-data storage bootstrap/cache \
+    && chmod -R 755 storage bootstrap/cache
 
-# Configure Apache
-RUN a2enmod rewrite
-COPY apache-config.conf /etc/apache2/sites-available/000-default.conf
+# Run Laravel optimizations (ignore if env missing)
+RUN php artisan config:cache || true
+RUN php artisan route:cache || true
+RUN php artisan view:cache || true
 
-# Clear any cached config and optimize for production
-RUN php artisan config:clear || true
-RUN php artisan route:clear || true
-RUN php artisan view:clear || true
-
-# Expose port 80
+# Expose Apache port
 EXPOSE 80
 
 # Start Apache
