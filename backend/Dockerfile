@@ -39,6 +39,10 @@ COPY apache-config.conf /etc/apache2/sites-available/000-default.conf
 
 # Create startup script
 RUN echo '#!/bin/bash' > /start.sh && \
+    echo 'echo "Clearing Laravel caches..."' >> /start.sh && \
+    echo 'php artisan config:clear || echo "Config clear failed"' >> /start.sh && \
+    echo 'php artisan route:clear || echo "Route clear failed"' >> /start.sh && \
+    echo 'php artisan view:clear || echo "View clear failed"' >> /start.sh && \
     echo 'echo "Running database migrations..."' >> /start.sh && \
     echo 'php artisan migrate --force || echo "Migration failed, continuing..."' >> /start.sh && \
     echo 'echo "Starting Apache..."' >> /start.sh && \
