@@ -1,0 +1,13 @@
+frontend/
+node_modules/
+.git/
+.DS_Store
+*.log
+.env
+.env.local
+.env.example
+README.md
+docs/
+.github/
+.vscode/
+.idea/
