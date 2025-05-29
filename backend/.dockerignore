@@ -1,28 +1,27 @@
-# Ignore development files
-.env
-.env.backup
-.env.production
+# Minimal safe .dockerignore for Laravel
 .git
 .gitignore
 README.md
 Dockerfile
 .dockerignore
+.env
+.env.backup
+.env.production
 
-# Ignore cache and logs (but keep directory structure)
-storage/logs/*.log
-storage/framework/cache/data/*
-storage/framework/sessions/*
-storage/framework/views/*
-.phpunit.result.cache
-
-# Ignore IDE files
+# IDE files
 .vscode
 .idea
 .phpactor.json
 
-# Ignore OS files
+# OS files
 .DS_Store
 Thumbs.db
 
-# Ignore node modules if any
+# Node modules
 node_modules
+
+# Don't ignore these critical Laravel files:
+# - artisan (needed for Laravel commands)
+# - public/ (needed for web server)
+# - bootstrap/ (needed for Laravel bootstrap)
+# - storage/ (needed but we'll create structure)

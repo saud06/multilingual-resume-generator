@@ -25,6 +25,14 @@ WORKDIR /var/www/html
 # Copy full application (including artisan + public/)
 COPY . .
 
+# Debug: Check what was actually copied
+RUN echo "=== Checking copied files ===" && \
+    ls -la /var/www/html && \
+    echo "=== Checking public directory ===" && \
+    ls -la /var/www/html/public || echo "PUBLIC MISSING" && \
+    echo "=== Checking artisan ===" && \
+    ls -la /var/www/html/artisan || echo "ARTISAN MISSING"
+
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
