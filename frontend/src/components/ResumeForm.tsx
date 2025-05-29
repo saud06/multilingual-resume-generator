@@ -628,7 +628,7 @@ export default function ResumeForm() {
       if (response.success && response.data) {
         // Use demo generation if not authenticated
         if (!isAuthenticated) {
-          useDemoGeneration();
+          // useDemoGeneration(); // Hook moved to component level
         }
         
         setGeneratedResume(response.data.content);

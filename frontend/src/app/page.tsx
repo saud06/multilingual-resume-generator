@@ -1,14 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 import AuthModal from "@/components/AuthModal";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -24,16 +21,7 @@ import {
   ArrowRight,
   CheckCircle,
   Play,
-  User,
-  Briefcase,
-  GraduationCap,
-  Award,
-  Eye,
-  X,
-  Mail,
-  Lock,
-  UserPlus,
-  Github
+  User
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -41,8 +29,8 @@ import DemoSection from "@/components/DemoSection";
 
 export default function Home() {
   const { language, setLanguage } = useLanguage();
-  const [authMode, setAuthMode] = useState<"signin" | "signup">("signin");
-  const [isDownloading, setIsDownloading] = useState<string | null>(null);
+  // const [authMode, setAuthMode] = useState<"signin" | "signup">("signin");
+  // const [isDownloading, setIsDownloading] = useState<string | null>(null);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const { data: session, status, update } = useSession();
   const { updateNextAuthSession, isAuthenticated } = useAuth();
@@ -180,7 +168,7 @@ export default function Home() {
   };
 
   const handleDemoDownload = async (type: "german" | "international") => {
-    setIsDownloading(type);
+    // setIsDownloading(type);
     
     try {
       const sampleData = type === "german" ? sampleGermanData : sampleInternationalData;
@@ -211,7 +199,7 @@ export default function Home() {
       console.error('Download failed:', error);
       alert(`Download failed. Please make sure the backend server is running on http://localhost:8000`);
     } finally {
-      setIsDownloading(null);
+      // setIsDownloading(null);
     }
   };
 

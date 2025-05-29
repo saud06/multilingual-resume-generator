@@ -150,7 +150,7 @@ export default function CoverLetterGenerator({ resumeData, language }: CoverLett
       if (response.success && response.data) {
         // Use demo generation if not authenticated
         if (!isAuthenticated) {
-          useDemoGeneration();
+          // useDemoGeneration(); // Hook moved to component level
         }
         
         setGeneratedCoverLetter(response.data.content);
