@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { FileText } from "lucide-react";
+import { FileText, Menu, X } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useState } from "react";
 import { useSession, signOut } from "next-auth/react";
@@ -18,6 +18,7 @@ export default function Header({ language, onLanguageChange }: HeaderProps) {
   const { user, isAuthenticated, logout } = useAuth();
   const { data: session } = useSession();
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
 
   const isActive = (path: string) => pathname === path;
@@ -72,6 +73,7 @@ export default function Header({ language, onLanguageChange }: HeaderProps) {
             <span className="text-xl font-bold">ResumeAI</span>
           </Link>
           
+          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-6">
             <Link href="/create" className={getLinkClassName("/create")}>
               {currentContent.nav.createResume}
@@ -89,7 +91,16 @@ export default function Header({ language, onLanguageChange }: HeaderProps) {
             </Link>
           </nav>
           
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 md:space-x-4">
+            {/* Mobile Menu Button */}
+            <Button
+              variant="ghost"
+              size="sm"
+              className="md:hidden"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </Button>
             {/* Language Toggle */}
             <div className="flex items-center bg-gray-100 rounded-lg p-1">
               <button
@@ -144,6 +155,82 @@ export default function Header({ language, onLanguageChange }: HeaderProps) {
             )}
           </div>
         </div>
+        
+        {/* Mobile Navigation Menu */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden border-t bg-white">
+            <nav className="container mx-auto px-4 py-4 space-y-4">
+              <Link 
+                href="/create" 
+                className={`block py-2 ${getLinkClassName("/create")}`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {currentContent.nav.createResume}
+              </Link>
+              {(isAuthenticated || session) && (
+                <Link 
+                  href="/my-resumes" 
+                  className={`block py-2 ${getLinkClassName("/my-resumes")}`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {currentContent.nav.myResumes}
+                </Link>
+              )}
+              <Link 
+                href="/templates" 
+                className={`block py-2 ${getLinkClassName("/templates")}`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {currentContent.nav.templates}
+              </Link>
+              <Link 
+                href="/examples" 
+                className={`block py-2 ${getLinkClassName("/examples")}`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {currentContent.nav.examples}
+              </Link>
+              
+              {/* Mobile Auth Section */}
+              <div className="pt-4 border-t">
+                {(isAuthenticated || session) ? (
+                  <div className="space-y-3">
+                    <p className="text-sm text-gray-600">
+                      {currentContent.auth.hello}, {session?.user?.name?.split(' ')[0] || user?.name?.split(' ')[0] || 'User'}
+                    </p>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="w-full"
+                      onClick={() => {
+                        if (session) {
+                          signOut();
+                        } else {
+                          logout();
+                        }
+                        setIsMobileMenuOpen(false);
+                      }}
+                    >
+                      {currentContent.auth.signOut}
+                    </Button>
+                  </div>
+                ) : (
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    className="w-full"
+                    onClick={() => {
+                      setShowAuthModal(true);
+                      setIsMobileMenuOpen(false);
+                    }}
+                  >
+                    {currentContent.auth.signIn}
+                  </Button>
+                )}
+              </div>
+            </nav>
+          </div>
+        )}
       </header>
 
       <AuthModal 
