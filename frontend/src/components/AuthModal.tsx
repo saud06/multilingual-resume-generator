@@ -40,7 +40,8 @@ export default function AuthModal({
 
   // Signup form state
   const [signupData, setSignupData] = useState({
-    name: '',
+    firstName: '',
+    lastName: '',
     email: '',
     password: '',
     confirmPassword: ''
@@ -77,14 +78,24 @@ export default function AuthModal({
       return;
     }
 
-    if (signupData.password.length < 6) {
-      setError('Password must be at least 6 characters');
+    if (signupData.password.length < 8) {
+      setError('Password must be at least 8 characters and contain letters and numbers');
+      setIsLoading(false);
+      return;
+    }
+
+    // Check if password contains both letters and numbers
+    const hasLetters = /[a-zA-Z]/.test(signupData.password);
+    const hasNumbers = /[0-9]/.test(signupData.password);
+    
+    if (!hasLetters || !hasNumbers) {
+      setError('Password must contain both letters and numbers');
       setIsLoading(false);
       return;
     }
 
     try {
-      const success = await signup(signupData.name, signupData.email, signupData.password);
+      const success = await signup(signupData.firstName, signupData.lastName, signupData.email, signupData.password);
       if (success) {
         onClose();
       } else {
@@ -145,19 +156,36 @@ export default function AuthModal({
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSignup} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-name">Full Name</Label>
-                    <div className="relative">
-                      <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                      <Input
-                        id="signup-name"
-                        type="text"
-                        placeholder="Enter your full name"
-                        className="pl-10"
-                        value={signupData.name}
-                        onChange={(e) => setSignupData({ ...signupData, name: e.target.value })}
-                        required
-                      />
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="signup-firstName">First Name</Label>
+                      <div className="relative">
+                        <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                        <Input
+                          id="signup-firstName"
+                          type="text"
+                          placeholder="First name"
+                          className="pl-10"
+                          value={signupData.firstName}
+                          onChange={(e) => setSignupData({ ...signupData, firstName: e.target.value })}
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="signup-lastName">Last Name</Label>
+                      <div className="relative">
+                        <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                        <Input
+                          id="signup-lastName"
+                          type="text"
+                          placeholder="Last name"
+                          className="pl-10"
+                          value={signupData.lastName}
+                          onChange={(e) => setSignupData({ ...signupData, lastName: e.target.value })}
+                          required
+                        />
+                      </div>
                     </div>
                   </div>
 
@@ -184,7 +212,7 @@ export default function AuthModal({
                       <Input
                         id="signup-password"
                         type="password"
-                        placeholder="Create a password"
+                        placeholder="8+ chars with letters & numbers"
                         className="pl-10"
                         value={signupData.password}
                         onChange={(e) => setSignupData({ ...signupData, password: e.target.value })}

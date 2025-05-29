@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
@@ -42,13 +42,7 @@ export default function ResumeAnalyticsComponent({
   const [analytics, setAnalytics] = useState<ResumeAnalytics | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
-  useEffect(() => {
-    if (content && content.trim().length > 0) {
-      analyzeResume();
-    }
-  }, [content, personalInfo, experiences, education, skills, language]);
-
-  const analyzeResume = async () => {
+  const analyzeResume = useCallback(async () => {
     setIsAnalyzing(true);
     try {
       // Simulate analysis delay for better UX
@@ -69,7 +63,13 @@ export default function ResumeAnalyticsComponent({
     } finally {
       setIsAnalyzing(false);
     }
-  };
+  }, [content, personalInfo, experiences, education, skills, language]);
+
+  useEffect(() => {
+    if (content && content.trim().length > 0) {
+      analyzeResume();
+    }
+  }, [content, personalInfo, experiences, education, skills, language, analyzeResume]);
 
   const getScoreColor = (score: number) => {
     if (score >= 80) return 'text-green-600';
@@ -359,7 +359,7 @@ export default function ResumeAnalyticsComponent({
             
             <Card>
               <CardContent className="p-4 text-center">
-                <div className="text-2xl font-bold text-secondary">{Math.round(analytics.readabilityScore)}</div>
+                <div className="text-2xl font-bold text-purple-600">{Math.round(analytics.readabilityScore)}</div>
                 <div className="text-sm text-gray-600">{currentContent.readabilityScore}</div>
               </CardContent>
             </Card>
