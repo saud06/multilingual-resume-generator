@@ -1,61 +1,42 @@
 # Use PHP 8.2 with Apache
 FROM php:8.2-apache
 
-# Install system dependencies
+# Install system dependencies and PHP extensions
 RUN apt-get update && apt-get install -y \
-    git \
-    curl \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev \
-    zip \
-    unzip \
-    libzip-dev \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
-
-# Enable Apache rewrite
-RUN a2enmod rewrite
-
-# Copy Apache vhost config
-COPY apache-config.conf /etc/apache2/sites-available/000-default.conf
+    git curl zip unzip \
+    libpng-dev libonig-dev libxml2-dev libzip-dev \
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip \
+    && a2enmod rewrite \
+    && rm -rf /var/lib/apt/lists/*
 
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy full application (including artisan + public/)
+# Copy everything from backend directory
 COPY . .
 
-# Debug: Check what was actually copied
-RUN echo "=== Checking copied files ===" && \
-    ls -la /var/www/html && \
-    echo "=== Checking public directory ===" && \
-    ls -la /var/www/html/public || echo "PUBLIC MISSING" && \
-    echo "=== Checking artisan ===" && \
-    ls -la /var/www/html/artisan || echo "ARTISAN MISSING"
-
-# Install Composer
+# Install Composer and set permissions
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-# Allow composer as root
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
-# Install PHP dependencies
+# Ensure public directory exists and create if missing
+RUN mkdir -p public && \
+    if [ ! -f public/index.php ]; then \
+        echo "Creating missing index.php" && \
+        echo '<?php require_once __DIR__."/../vendor/autoload.php"; $app = require_once __DIR__."/../bootstrap/app.php"; $app->handleRequest(Illuminate\Http\Request::capture());' > public/index.php; \
+    fi
+
+# Install dependencies
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
-# Create required directories and set permissions
-RUN mkdir -p storage/framework/{sessions,views,cache,testing} \
-    storage/logs \
-    bootstrap/cache \
-    && chown -R www-data:www-data storage bootstrap/cache \
-    && chmod -R 755 storage bootstrap/cache
+# Set proper permissions
+RUN chown -R www-data:www-data /var/www/html && \
+    chmod -R 755 /var/www/html && \
+    mkdir -p storage/framework/{sessions,views,cache,testing} storage/logs bootstrap/cache
 
-# Run Laravel optimizations (ignore if env missing)
-RUN php artisan config:cache || true
-RUN php artisan route:cache || true
-RUN php artisan view:cache || true
+# Copy Apache config
+COPY apache-config.conf /etc/apache2/sites-available/000-default.conf
 
-# Expose Apache port
+# Expose port and start Apache
 EXPOSE 80
-
-# Start Apache
 CMD ["apache2-foreground"]
