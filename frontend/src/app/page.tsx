@@ -685,7 +685,7 @@ export default function Home() {
                               {step.description.split('.')[0]}.
                             </span>
                             <span className="hidden sm:inline">
-                              {step.description}
+                              {step.description.split('.').slice(0, 2).join('.') + '.'}
                             </span>
                           </p>
                         </div>
