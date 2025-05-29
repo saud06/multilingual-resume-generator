@@ -653,56 +653,63 @@ export default function Home() {
                   {currentContent.hero.secondary}
                 </Button>
               </DialogTrigger>
-              <DialogContent className="w-[65vw] !max-w-none max-h-[90vh] overflow-y-auto p-8" style={{maxWidth: 'none', width: '65vw'}}>
+              <DialogContent className="w-[95vw] sm:w-[85vw] lg:w-[65vw] max-w-4xl max-h-[90vh] overflow-y-auto p-4 sm:p-6 lg:p-8">
                 <DialogHeader>
-                  <DialogTitle className="text-2xl font-bold text-center mb-2">
+                  <DialogTitle className="text-xl sm:text-2xl font-bold text-center mb-2">
                     {currentContent.howItWorks.title}
                   </DialogTitle>
-                  <DialogDescription className="text-center text-lg">
+                  <DialogDescription className="text-center text-base sm:text-lg">
                     {currentContent.howItWorks.description}
                   </DialogDescription>
                 </DialogHeader>
                 
-                <div className="mt-6">
+                <div className="mt-4 sm:mt-6">
                   {/* Steps */}
-                  <div className="grid lg:grid-cols-2 gap-6 mb-8">
+                  <div className="grid gap-4 sm:gap-6 lg:grid-cols-2 mb-6 sm:mb-8">
                     {currentContent.howItWorks.steps.map((step, index) => (
-                      <div key={index} className="flex gap-4 p-6 rounded-lg border bg-gradient-to-r bg-primary/5 min-h-[180px]">
+                      <div key={index} className="flex gap-3 sm:gap-4 p-4 sm:p-6 rounded-lg border bg-gradient-to-r bg-primary/5">
                         <div className="flex-shrink-0">
-                          <div className="w-12 h-12 gradient-professional rounded-full flex items-center justify-center text-white font-bold">
+                          <div className="w-10 h-10 sm:w-12 sm:h-12 gradient-professional rounded-full flex items-center justify-center text-white font-bold text-sm sm:text-base">
                             {step.number}
                           </div>
                         </div>
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-3">
-                            <div className="text-primary">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-2 sm:mb-3">
+                            <div className="text-primary hidden sm:block">
                               {step.icon}
                             </div>
-                            <h3 className="font-semibold text-base">{step.title}</h3>
+                            <h3 className="font-semibold text-sm sm:text-base">{step.title}</h3>
                           </div>
-                          <p className="text-gray-600 text-sm leading-relaxed">{step.description}</p>
+                          <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">
+                            <span className="sm:hidden">
+                              {step.description.split('.')[0]}.
+                            </span>
+                            <span className="hidden sm:inline">
+                              {step.description}
+                            </span>
+                          </p>
                         </div>
                       </div>
                     ))}
                   </div>
                   
                   {/* Features */}
-                  <div className="bg-gray-50 rounded-lg p-6">
-                    <h4 className="font-semibold text-lg mb-4 text-center">Key Features</h4>
-                    <div className="grid md:grid-cols-3 gap-3">
+                  <div className="bg-gray-50 rounded-lg p-4 sm:p-6">
+                    <h4 className="font-semibold text-base sm:text-lg mb-3 sm:mb-4 text-center">Key Features</h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
                       {currentContent.howItWorks.features.map((feature, index) => (
                         <div key={index} className="flex items-center gap-2">
-                          <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
-                          <span className="text-sm">{feature}</span>
+                          <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-500 flex-shrink-0" />
+                          <span className="text-xs sm:text-sm">{feature}</span>
                         </div>
                       ))}
                     </div>
                   </div>
                   
                   {/* CTA */}
-                  <div className="text-center mt-6">
-                    <Link href="/create">
-                      <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
+                  <div className="text-center mt-4 sm:mt-6">
+                    <Link href="/create" className="w-full sm:w-auto inline-block">
+                      <Button size="lg" className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground">
                         {currentContent.hero.cta}
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
