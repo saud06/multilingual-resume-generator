@@ -12,8 +12,8 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        // Remove Sanctum middleware for API routes to avoid CSRF issues
-        // We'll add it back only for authenticated routes that need it
+        // Add CORS middleware globally
+        $middleware->append(\App\Http\Middleware\ForceCorsMiddleware::class);
         
         $middleware->alias([
             'verified' => \App\Http\Middleware\EnsureEmailIsVerified::class,
