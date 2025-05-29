@@ -1,0 +1,65 @@
+services:
+  # Laravel Backend API
+  - type: web
+    name: multilingual-resume-backend
+    env: php
+    buildCommand: composer install --no-dev --optimize-autoloader
+    startCommand: vendor/bin/heroku-php-apache2 public/
+    plan: free
+    branch: main
+    rootDir: backend
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: APP_KEY
+        generateValue: true
+      - key: APP_URL
+        fromService:
+          type: web
+          name: multilingual-resume-backend
+          property: host
+      - key: DB_CONNECTION
+        value: mysql
+      - key: DB_HOST
+        value: trolley.proxy.rlwy.net
+      - key: DB_PORT
+        value: 44769
+      - key: DB_DATABASE
+        value: railway
+      - key: DB_USERNAME
+        value: root
+      - key: DB_PASSWORD
+        value: SFWoBIaiLeDBzlLlaJspUZtnnuYWxJiq
+      - key: SESSION_DRIVER
+        value: database
+      - key: CACHE_STORE
+        value: database
+      - key: QUEUE_CONNECTION
+        value: database
+      - key: HUGGINGFACE_API_TOKEN
+        value: # Add your Hugging Face token here
+
+  # Next.js Frontend
+  - type: web
+    name: multilingual-resume-frontend
+    env: node
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    plan: free
+    branch: main
+    rootDir: frontend
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        fromService:
+          type: web
+          name: multilingual-resume-backend
+          property: host
+      - key: NEXTAUTH_SECRET
+        generateValue: true
+      - key: NEXTAUTH_URL
+        fromService:
+          type: web
+          name: multilingual-resume-frontend
+          property: host
