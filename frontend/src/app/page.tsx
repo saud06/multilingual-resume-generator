@@ -33,7 +33,7 @@ export default function Home() {
   // const [isDownloading, setIsDownloading] = useState<string | null>(null);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const { data: session, status, update } = useSession();
-  const { updateNextAuthSession, isAuthenticated } = useAuth();
+  const { updateNextAuthSession, isAuthenticated, user, logout } = useAuth();
   const pathname = usePathname();
 
   const isActive = (path: string) => pathname === path;
@@ -492,10 +492,22 @@ export default function Home() {
                 EN
               </button>
             </div>
-            {session ? (
+            {(isAuthenticated || session) ? (
               <div className="flex items-center gap-2">
-                <span className="text-sm">{currentContent.auth.hello}, {session.user?.name?.split(' ')[0]}</span>
-                <Button variant="outline" size="sm" onClick={() => signOut()}>
+                <span className="text-sm">
+                  {currentContent.auth.hello}, {session?.user?.name?.split(' ')[0] || user?.name?.split(' ')[0] || 'User'}
+                </span>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={() => {
+                    if (session) {
+                      signOut();
+                    } else {
+                      logout();
+                    }
+                  }}
+                >
                   {currentContent.auth.signOut}
                 </Button>
               </div>
