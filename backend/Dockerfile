@@ -47,11 +47,38 @@ COPY apache-config.conf /etc/apache2/sites-available/000-default.conf
 
 # Verify directory structure and files
 RUN ls -la /var/www/html/ && \
-    ls -la /var/www/html/public/ && \
-    echo "Checking index.php:" && \
-    ls -la /var/www/html/public/index.php && \
-    echo "File contents preview:" && \
-    head -5 /var/www/html/public/index.php
+    echo "Public directory contents:" && \
+    ls -la /var/www/html/public/ || echo "Public directory does not exist" && \
+    echo "Manually creating index.php if missing:" && \
+    if [ ! -f /var/www/html/public/index.php ]; then \
+        mkdir -p /var/www/html/public && \
+        echo '<?php' > /var/www/html/public/index.php && \
+        echo '' >> /var/www/html/public/index.php && \
+        echo 'use Illuminate\Foundation\Application;' >> /var/www/html/public/index.php && \
+        echo 'use Illuminate\Http\Request;' >> /var/www/html/public/index.php && \
+        echo '' >> /var/www/html/public/index.php && \
+        echo "define('LARAVEL_START', microtime(true));" >> /var/www/html/public/index.php && \
+        echo '' >> /var/www/html/public/index.php && \
+        echo 'if (file_exists($maintenance = __DIR__."/../storage/framework/maintenance.php")) {' >> /var/www/html/public/index.php && \
+        echo '    require $maintenance;' >> /var/www/html/public/index.php && \
+        echo '}' >> /var/www/html/public/index.php && \
+        echo '' >> /var/www/html/public/index.php && \
+        echo 'require __DIR__."/../vendor/autoload.php";' >> /var/www/html/public/index.php && \
+        echo '' >> /var/www/html/public/index.php && \
+        echo '$app = require_once __DIR__."/../bootstrap/app.php";' >> /var/www/html/public/index.php && \
+        echo '' >> /var/www/html/public/index.php && \
+        echo '$app->handleRequest(Request::capture());' >> /var/www/html/public/index.php; \
+    fi && \
+    echo "Final verification:" && \
+    ls -la /var/www/html/public/index.php
+
+# Create .htaccess if missing
+RUN if [ ! -f /var/www/html/public/.htaccess ]; then \
+        echo 'RewriteEngine On' > /var/www/html/public/.htaccess && \
+        echo 'RewriteCond %{REQUEST_FILENAME} !-f' >> /var/www/html/public/.htaccess && \
+        echo 'RewriteCond %{REQUEST_FILENAME} !-d' >> /var/www/html/public/.htaccess && \
+        echo 'RewriteRule ^(.*)$ index.php [QSA,L]' >> /var/www/html/public/.htaccess; \
+    fi
 
 # Set proper permissions
 RUN chown -R www-data:www-data /var/www/html \
