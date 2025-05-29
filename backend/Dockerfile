@@ -19,11 +19,17 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /var/www/html
 
+# Copy composer files first for better caching
+COPY composer.json composer.lock ./
+
+# Install PHP dependencies
+RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts
+
 # Copy application code
 COPY . .
 
-# Install PHP dependencies
-RUN composer install --no-dev --optimize-autoloader --no-interaction
+# Run composer scripts after copying all files
+RUN composer run-script post-autoload-dump
 
 # Create required directories and set permissions
 RUN mkdir -p storage/framework/{sessions,views,cache,testing} \
@@ -36,9 +42,15 @@ RUN mkdir -p storage/framework/{sessions,views,cache,testing} \
 RUN a2enmod rewrite
 COPY apache-config.conf /etc/apache2/sites-available/000-default.conf
 
+# Verify directory structure
+RUN ls -la /var/www/html/ && ls -la /var/www/html/public/
+
 # Set proper permissions
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html
+
+# Test Laravel installation
+RUN php artisan --version || echo "Laravel not properly installed"
 
 # Cache Laravel configuration (skip if fails due to missing env vars)
 RUN php artisan config:cache || echo "Config cache skipped"
